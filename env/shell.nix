@@ -6,6 +6,7 @@ mach-nix.nixpkgs.mkShell {
   ];
 
   shellHook = ''
-    jupyter lab
+    export DEVITO_LOGGING=DEBUG
+    #jupyter lab
   '';
 }
