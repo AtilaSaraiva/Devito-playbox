@@ -1,8 +1,8 @@
-from devito import Eq, TimeFunction, sqrt, Function, Operator, Grid, solve, ConditionalDimension
+from devito import Eq, TimeFunction, sqrt, Function, Operator, Grid, solve
 from matplotlib import pyplot as plt
 import numpy as np
 
-def Shallow_water_2D(eta0, M0, N0, h0, grid, g, alpha, nt, dx, dy, dt, nsnaps=5):
+def Shallow_water_2D(eta0, M0, N0, h0, grid, g, alpha, nt, dx, dy, dt):
     """
     Computes and returns the discharge fluxes M, N and wave height eta from
     the 2D Shallow water equation using the FTCS finite difference method.
@@ -37,14 +37,6 @@ def Shallow_water_2D(eta0, M0, N0, h0, grid, g, alpha, nt, dx, dy, dt, nsnaps=5)
     h     = Function(name='h', grid=grid)
     D     = Function(name='D', grid=grid)
 
-    factor = round(nt / nsnaps)
-    print(factor, nt, grid.time_dim)
-    time_subsampled = ConditionalDimension(
-        't_sub', parent=grid.time_dim, factor=factor)
-    etasave = TimeFunction(name='etasave', grid=grid, space_order=2,
-                         save=nsnaps, time_dim=time_subsampled)
-
-
     eta.data[0] = eta0.copy()
     M.data[0]   = M0.copy()
     N.data[0]   = N0.copy()
@@ -75,10 +67,10 @@ def Shallow_water_2D(eta0, M0, N0, h0, grid, g, alpha, nt, dx, dy, dt, nsnaps=5)
     eq_D        = Eq(D, eta.forward + h)
 
     optime = Operator([update_eta, bc_left, bc_right, bc_top, bc_bottom,
-                       update_M, update_N, eq_D] + [Eq(etasave, eta)])
+                       update_M, update_N, eq_D])
 
     optime(time=nt, dt=dt)
-    return etasave, M, N
+    return eta, M, N
 
 Lx    = 100.0   # width of the mantle in the x direction []
 Ly    = 100.0   # thickness of the mantle in the y direction []

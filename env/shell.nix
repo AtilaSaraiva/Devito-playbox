@@ -10,6 +10,8 @@ mach-nix.nixpkgs.mkShell {
 
   shellHook = ''
     export DEVITO_LOGGING=DEBUG
+    export DEVITO_ARCH="gcc"
+    export DEVITO_LANGUAGE="openmp"
     jupyter lab
   '';
 }
