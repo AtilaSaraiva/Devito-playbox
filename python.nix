@@ -1,4 +1,4 @@
-{ pkgs ? import "/home/atila/Files/Códigos/gitRepos/nixpkgs-devito" {} }:
+{ pkgs ? import "/home/atila/Files/Códigos/gitRepos/nixpkgs" {} }:
 let
   my-python-packages = python-packages: with python-packages; [
     numpy

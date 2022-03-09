@@ -12,6 +12,8 @@ mach-nix.nixpkgs.mkShell {
     export DEVITO_LOGGING=DEBUG
     export DEVITO_ARCH="gcc"
     export DEVITO_LANGUAGE="openmp"
+    export LD_PRELOAD="${pkgs.gcc9.cc.lib}/lib/libgomp.so"
+    export LDFLAGS="-lgomp"
     jupyter lab
   '';
 }
